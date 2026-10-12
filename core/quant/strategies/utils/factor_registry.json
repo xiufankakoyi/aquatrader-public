@@ -1,0 +1,102 @@
+{
+    "_comment": "因子注册表 - 定义所有自定义因子的计算方式",
+    "gain_3d": {
+        "source": "compute",
+        "function": "calc_gain_3d",
+        "params": {
+            "window": 3
+        },
+        "description": "3日涨幅（%）",
+        "category": "momentum"
+    },
+    "gain_5d": {
+        "source": "compute",
+        "function": "calc_gain_5d",
+        "params": {
+            "window": 5
+        },
+        "description": "5日涨幅（%）",
+        "category": "momentum"
+    },
+    "gain_10d": {
+        "source": "compute",
+        "function": "calc_gain_10d",
+        "params": {
+            "window": 10
+        },
+        "description": "10日涨幅（%）",
+        "category": "momentum"
+    },
+    "volatility_20": {
+        "source": "compute",
+        "function": "calc_volatility",
+        "params": {
+            "window": 20
+        },
+        "description": "20日滚动波动率",
+        "category": "volatility"
+    },
+    "volatility_60": {
+        "source": "compute",
+        "function": "calc_volatility",
+        "params": {
+            "window": 60
+        },
+        "description": "60日滚动波动率",
+        "category": "volatility"
+    },
+    "sharpe_20": {
+        "source": "compute",
+        "function": "calc_sharpe",
+        "params": {
+            "window": 20
+        },
+        "description": "20日滚动夏普率",
+        "category": "risk_adjusted"
+    },
+    "sharpe_60": {
+        "source": "compute",
+        "function": "calc_sharpe",
+        "params": {
+            "window": 60
+        },
+        "description": "60日滚动夏普率",
+        "category": "risk_adjusted"
+    },
+    "turnover_ma5": {
+        "source": "compute",
+        "function": "calc_turnover_ma",
+        "params": {
+            "window": 5
+        },
+        "description": "5日平均换手率",
+        "category": "liquidity"
+    },
+    "turnover_ma10": {
+        "source": "compute",
+        "function": "calc_turnover_ma",
+        "params": {
+            "window": 10
+        },
+        "description": "10日平均换手率",
+        "category": "liquidity"
+    },
+    "amount_ratio_5": {
+        "source": "compute",
+        "function": "calc_amount_ratio",
+        "params": {
+            "window": 5
+        },
+        "description": "成交额相对5日均值比率",
+        "category": "liquidity"
+    },
+    "rank_pct_cross": {
+        "source": "compute",
+        "function": "calc_rank_pct",
+        "params": {
+            "axis": 1
+        },
+        "description": "横截面排名百分位（0-100）",
+        "category": "rank"
+    }
+}

@@ -1,0 +1,75 @@
+# Core dependencies
+tushare==1.2.61
+flask==2.3.3
+flask-cors==4.0.0
+flask-socketio>=5.3.0
+fastapi>=0.115.0
+httpx>=0.27.0
+python-dotenv>=1.0.0
+pandas>=2.2.0
+numpy>=1.26.0
+scipy>=1.12.0
+numba>=0.59.0
+efinance>=0.5.3
+akshare>=1.16.0
+easy_tdx>=1.20.0
+baostock>=0.8.9
+requests>=2.31.0
+yfinance>=0.2.40
+feedparser>=6.0.11
+
+# Data processing
+pyarrow>=15.0.0
+polars>=0.20.0
+msgpack>=1.0.0
+openpyxl>=3.1.0
+PyYAML>=6.0.0
+duckdb>=1.0.0
+
+# NLP
+jieba==0.42.1
+snownlp==0.12.3
+
+# Database & Cache
+redis>=4.5.0
+lancedb==0.29.2
+pylance==3.0.0
+
+# Task Queue (Celery)
+celery[redis]>=5.3.0
+deap>=1.4.0
+optuna>=4.0.0
+
+# AI
+openai>=1.0.0
+
+# Web server
+granian>=1.0.0
+python-socketio>=5.0.0
+asgiref>=3.8.1,<4.0.0
+
+# Development
+watchdog>=4.0.0
+loguru>=0.7.0
+
+# Similarity matching
+dtaidistance>=2.3.0
+
+# Optional: Semantic evidence matching (PseudoEvidenceIndex / CrossEncoderReranker)
+# 缺失时 EvidenceActivator 使用 KeywordMatchIndex（字符 bigram + 关键词倒排），
+# 真实研究流水线不依赖本组件，仅影响 PseudoEvidenceIndex 的语义匹配能力。
+# sentence-transformers>=2.2.0
+
+# Optional: Temporal causal screening (Step 8, temporal_causal_service.py)
+# 缺失时 TemporalCausalService 自动降级为 TEMPORAL_PRECEDENCE,不影响主流程。
+# statsmodels>=0.14.0
+# pycausalimpact>=0.1.16
+
+# Optional: Regime detection (P0 Sprint, regime_detector.py)
+# 缺失时 RegimeDetector 自动降级为 rule_threshold(20 日累积收益 ±3%)。
+# hmmlearn>=0.3.0
+
+# Optional: Dragon Eye feature (uncomment if needed)
+# lancedb>=0.3.0
+pypdf>=5.0,<7
+feedparser>=6.0,<7

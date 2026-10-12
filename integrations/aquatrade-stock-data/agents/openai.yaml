@@ -1,0 +1,4 @@
+interface:
+  display_name: "AquaTrade Stock Data"
+  short_description: "通过 AquaTrade 查询中国股票统一数据源与回退状态"
+  default_prompt: "使用 AquaTrade 统一数据源查询行情、K线、公告、研报和数据源状态。"

@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tv-bg: #0A0A0A;
+  --tv-pane-bg: #141414;
+  --tv-border: #2a2e39;
+  --tv-text-muted: #787b86;
+  --tv-text-active: #d1d4dc;
+  --tv-green: #089981;
+  --tv-red: #f23645;
+  --tv-blue: #2962ff;
+
+  /* 响应式字体变量 */
+  --tv-font-xs: clamp(0.625rem, 0.6rem + 0.125vw, 0.6875rem);
+  --tv-font-sm: clamp(0.6875rem, 0.65rem + 0.1875vw, 0.75rem);
+  --tv-font-base: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --tv-font-md: clamp(0.8125rem, 0.75rem + 0.3125vw, 0.9375rem);
+
+  /* 响应式间距 */
+  --tv-space-xs: clamp(0.125rem, 0.25vw, 0.25rem);
+  --tv-space-sm: clamp(0.25rem, 0.5vw, 0.5rem);
+  --tv-space-md: clamp(0.5rem, 1vw, 0.75rem);
+  --tv-space-lg: clamp(0.75rem, 1.5vw, 1rem);
+
+  /* 布局尺寸 */
+  --tv-header-height: clamp(2.5rem, 7vh, 3.5rem);
+  --tv-panel-width: clamp(17.5rem, 22vw, 21.25rem);
+}
+
+@layer base {
+  body {
+    @apply bg-[#0A0A0A] text-[#d1d4dc];
+    font-size: var(--tv-font-base);
+  }
+}
+
+@layer components {
+  .tv-pane {
+    @apply bg-transparent overflow-hidden flex flex-col relative;
+  }
+
+  .tv-pane-header-flat {
+    @apply absolute top-2 left-3 right-3 z-10 flex items-center gap-2 pointer-events-none;
+  }
+
+  .tv-pane-label {
+    @apply font-bold text-[#787b86] uppercase tracking-[0.2em] opacity-60;
+    font-size: var(--tv-font-xs);
+  }
+
+  .tv-dot-grid {
+    background-image: radial-gradient(#2a2e39 1px, transparent 0);
+    background-size: clamp(20px, 2vw, 24px) clamp(20px, 2vw, 24px);
+  }
+
+  .tv-text-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+
+  /* 响应式面板 */
+  .tv-panel {
+    width: var(--tv-panel-width);
+    transition: width 0.3s ease;
+  }
+
+  /* 响应式头部 */
+  .tv-header {
+    height: var(--tv-header-height);
+    padding: 0 var(--tv-space-md);
+  }
+
+  /* 响应式按钮 */
+  .tv-btn {
+    height: clamp(1.5rem, 5vh, 2rem);
+    padding: 0 var(--tv-space-md);
+    font-size: var(--tv-font-sm);
+    border-radius: 0.25rem;
+    transition: all 0.15s ease;
+  }
+
+  /* 响应式输入框 */
+  .tv-input {
+    height: clamp(1.5rem, 5vh, 2rem);
+    padding: 0 var(--tv-space-sm);
+    font-size: var(--tv-font-xs);
+  }
+
+  /* 响应式选择器 */
+  .tv-select {
+    height: clamp(1.5rem, 5vh, 2rem);
+    padding: 0 var(--tv-space-sm);
+    font-size: var(--tv-font-xs);
+    min-width: clamp(5rem, 10vw, 8rem);
+  }
+
+  /* 响应式图表容器 */
+  .tv-chart-container {
+    height: clamp(200px, 35vh, 400px);
+    width: 100%;
+  }
+
+  /* 响应式表格 */
+  .tv-table-container {
+    max-height: clamp(250px, 40vh, 500px);
+    overflow-y: auto;
+  }
+
+  /* 响应式卡片 */
+  .tv-card {
+    padding: var(--tv-space-md);
+    border-radius: 0.375rem;
+  }
+
+  /* Breathing animation for status lights */
+  @keyframes breathe {
+
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .animate-breathe {
+    animation: breathe 2s infinite ease-in-out;
+  }
+
+  /* 响应式网格布局 */
+  .tv-grid {
+    display: grid;
+    gap: var(--tv-space-md);
+    grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 30vw, 400px), 1fr));
+  }
+
+  .tv-grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 45%, 50%), 1fr));
+  }
+
+  /* Flexbox 工具类 */
+  .tv-flex {
+    display: flex;
+  }
+
+  .tv-flex-col {
+    flex-direction: column;
+  }
+
+  .tv-flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .tv-items-center {
+    align-items: center;
+  }
+
+  .tv-justify-between {
+    justify-content: space-between;
+  }
+
+  .tv-gap-sm {
+    gap: var(--tv-space-sm);
+  }
+
+  .tv-gap-md {
+    gap: var(--tv-space-md);
+  }
+
+  /* 响应式隐藏类 */
+  .tv-hide-mobile {
+    @apply hidden sm:block;
+  }
+
+  .tv-hide-tablet {
+    @apply hidden md:block;
+  }
+
+  .tv-hide-desktop {
+    @apply block sm:hidden;
+  }
+}
+
+/* Scrollbar styling - 响应式 */
+::-webkit-scrollbar {
+  width: clamp(4px, 0.4vw, 6px);
+  height: clamp(4px, 0.4vw, 6px);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2e39;
+  border-radius: clamp(2px, 0.2vw, 3px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #363a45;
+}
+
+/* ========== 响应式断点适配 ========== */
+
+/* 中屏桌面 (992px - 1199px) */
+@media (max-width: 1199px) {
+  :root {
+    --tv-panel-width: clamp(16rem, 20vw, 18rem);
+    --tv-font-base: clamp(0.6875rem, 0.65rem + 0.1875vw, 0.8125rem);
+  }
+
+  .tv-chart-container {
+    height: clamp(180px, 30vh, 350px);
+  }
+}
+
+/* 小屏桌面/平板 (768px - 991px) */
+@media (max-width: 991px) {
+  :root {
+    --tv-panel-width: clamp(15rem, 25vw, 17rem);
+    --tv-font-base: clamp(0.625rem, 0.6rem + 0.125vw, 0.75rem);
+  }
+
+  .tv-panel {
+    width: 100%;
+  }
+
+  .tv-chart-container {
+    height: clamp(160px, 25vh, 300px);
+  }
+
+  .tv-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 平板/手机横屏 (576px - 767px) */
+@media (max-width: 767px) {
+  :root {
+    --tv-header-height: 2.25rem;
+    --tv-font-xs: 0.625rem;
+  }
+
+  .tv-chart-container {
+    height: clamp(150px, 22vh, 250px);
+  }
+
+  .tv-table-container {
+    max-height: clamp(200px, 35vh, 400px);
+  }
+}
+
+/* 手机竖屏 (< 576px) */
+@media (max-width: 575px) {
+  :root {
+    --tv-font-base: 0.75rem;
+  }
+
+  .tv-chart-container {
+    height: 200px;
+  }
+
+  .tv-btn,
+  .tv-input,
+  .tv-select {
+    height: 1.75rem;
+  }
+}
+
+/* 高缩放比例适配 (150%+) */
+@media (min-resolution: 144dpi) {
+  :root {
+    --tv-font-base: clamp(0.8125rem, 0.75rem + 0.3125vw, 0.9375rem);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .tv-pane,
+  .tv-panel {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* ========== Ant Design 深色主题覆盖 ========== */
+
+/* 下拉菜单和子菜单样式 */
+.ant-dropdown-menu,
+.ant-menu-submenu-popup {
+  background: #1a1a1a !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+.ant-dropdown-menu-item,
+.ant-menu-item {
+  color: #d1d4dc !important;
+}
+
+.ant-dropdown-menu-item:hover,
+.ant-menu-item:hover {
+  background: #252526 !important;
+}
+
+/* 子菜单标题 */
+.ant-menu-submenu-title {
+  color: #d1d4dc !important;
+}
+
+.ant-menu-submenu-title:hover {
+  background: #252526 !important;
+}
+
+/* 子菜单弹出层 */
+.ant-menu-submenu-popup .ant-menu {
+  background: #1a1a1a !important;
+}
+
+.ant-menu-submenu-popup .ant-menu-item {
+  color: #d1d4dc !important;
+}
+
+.ant-menu-submenu-popup .ant-menu-submenu-title {
+  color: #d1d4dc !important;
+}

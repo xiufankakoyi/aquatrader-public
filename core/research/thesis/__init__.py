@@ -1,0 +1,120 @@
+"""P2.6 差异化观点对象子包。
+
+按 P2 计划 §208-227 Task P2.6：
+- VariantPerception：市场观点 vs 内部模型 vs 差异变量
+- 强制规则：
+  1. market_view 不可由系统臆测，必须来自共识或市场隐含模型
+  2. internal_view 必须来自 P1 可审计模型
+  3. 差异必须落到具体经营驱动
+  4. 催化只描述验证事件和时间，不输出交易动作
+
+导出：
+- 契约：VariantPerception / MarketView / InternalView / DriverDifference 等
+- 构建：VariantPerceptionBuilder / build_variant_perception_builder
+- 持久化：ThesisRepository
+- 常量：MARKET_VIEW_SOURCES / THESIS_STATUSES 等
+"""
+from __future__ import annotations
+
+from .contracts import (
+    DriverDifference,
+    FORBIDDEN_TRADE_ACTION_KEYWORDS,
+    GENERIC_DIFFERENCE_KEYWORDS,
+    INTERNAL_VIEW_SOURCE_P1,
+    InvalidationCondition,
+    InternalView,
+    MARKET_VIEW_SOURCE_CONSENSUS,
+    MARKET_VIEW_SOURCE_GUIDANCE,
+    MARKET_VIEW_SOURCE_IMPLIED,
+    MARKET_VIEW_SOURCES,
+    MarketView,
+    REJECT_CATALYST_TRADE_ACTION,
+    REJECT_GENERIC_DIFFERENCE,
+    REJECT_INVALIDATION_GENERIC,
+    REJECT_MISSING_DRIVER_DIFFERENCES,
+    REJECT_MISSING_INTERNAL_VIEW,
+    REJECT_MISSING_MARKET_VIEW,
+    REVIEW_FREQUENCY_EVENT_DRIVEN,
+    REVIEW_FREQUENCY_MONTHLY,
+    REVIEW_FREQUENCY_QUARTERLY,
+    THESIS_STATUS_ACTIVE,
+    THESIS_STATUS_DRAFT,
+    THESIS_STATUS_EXPIRED,
+    THESIS_STATUS_INVALIDATED,
+    THESIS_STATUS_SUPERSEDED,
+    THESIS_STATUSES,
+    ThesisCatalyst,
+    VALIDATION_TYPE_EARNINGS_RELEASE,
+    VALIDATION_TYPE_INDUSTRY_DATA,
+    VALIDATION_TYPE_MANAGEMENT_UPDATE,
+    VALIDATION_TYPE_POLICY_ANNOUNCEMENT,
+    VALIDATION_TYPE_PRODUCT_LAUNCH,
+    VALIDATION_TYPES,
+    VALUATION_DIRECTION_HIGHER,
+    VALUATION_DIRECTION_LOWER,
+    VALUATION_DIRECTION_NEUTRAL,
+    VALUATION_DIRECTIONS,
+    VALUATION_MAGNITUDE_LARGE,
+    VALUATION_MAGNITUDE_MEDIUM,
+    VALUATION_MAGNITUDE_SMALL,
+    VALUATION_MAGNITUDES,
+    ValidationSchedule,
+    ValuationImplication,
+    VariantPerception,
+    utc_now,
+)
+from .repository import ThesisRepository
+from .variant_perception import build_variant_perception_builder
+
+__all__ = [
+    # Contracts
+    "DriverDifference",
+    "FORBIDDEN_TRADE_ACTION_KEYWORDS",
+    "GENERIC_DIFFERENCE_KEYWORDS",
+    "INTERNAL_VIEW_SOURCE_P1",
+    "InvalidationCondition",
+    "InternalView",
+    "MARKET_VIEW_SOURCE_CONSENSUS",
+    "MARKET_VIEW_SOURCE_GUIDANCE",
+    "MARKET_VIEW_SOURCE_IMPLIED",
+    "MARKET_VIEW_SOURCES",
+    "MarketView",
+    "REJECT_CATALYST_TRADE_ACTION",
+    "REJECT_GENERIC_DIFFERENCE",
+    "REJECT_INVALIDATION_GENERIC",
+    "REJECT_MISSING_DRIVER_DIFFERENCES",
+    "REJECT_MISSING_INTERNAL_VIEW",
+    "REJECT_MISSING_MARKET_VIEW",
+    "REVIEW_FREQUENCY_EVENT_DRIVEN",
+    "REVIEW_FREQUENCY_MONTHLY",
+    "REVIEW_FREQUENCY_QUARTERLY",
+    "THESIS_STATUS_ACTIVE",
+    "THESIS_STATUS_DRAFT",
+    "THESIS_STATUS_EXPIRED",
+    "THESIS_STATUS_INVALIDATED",
+    "THESIS_STATUS_SUPERSEDED",
+    "THESIS_STATUSES",
+    "ThesisCatalyst",
+    "VALIDATION_TYPE_EARNINGS_RELEASE",
+    "VALIDATION_TYPE_INDUSTRY_DATA",
+    "VALIDATION_TYPE_MANAGEMENT_UPDATE",
+    "VALIDATION_TYPE_POLICY_ANNOUNCEMENT",
+    "VALIDATION_TYPE_PRODUCT_LAUNCH",
+    "VALIDATION_TYPES",
+    "VALUATION_DIRECTION_HIGHER",
+    "VALUATION_DIRECTION_LOWER",
+    "VALUATION_DIRECTION_NEUTRAL",
+    "VALUATION_DIRECTIONS",
+    "VALUATION_MAGNITUDE_LARGE",
+    "VALUATION_MAGNITUDE_MEDIUM",
+    "VALUATION_MAGNITUDE_SMALL",
+    "VALUATION_MAGNITUDES",
+    "ValidationSchedule",
+    "ValuationImplication",
+    "VariantPerception",
+    "utc_now",
+    # Builder
+    "build_variant_perception_builder",
+    # Repository
+    "ThesisRepository",
+]

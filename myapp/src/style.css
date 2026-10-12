@@ -1,0 +1,646 @@
+/* ============================================
+   AquaTrade Global Styles
+   整合设计系统 + 响应式布局
+   ============================================ */
+
+/* 导入设计系统 */
+@import './styles/design-system.css';
+
+/* ============================================
+   1. 基础变量 (与 design-system.css 保持一致)
+   ============================================ */
+:root {
+  /* 兼容旧变量 - 逐步迁移到 design-system.css */
+  --bg-card: var(--bg-secondary);
+  --bg-modal: var(--bg-secondary);
+  --success-color: var(--color-up);
+  --error-color: var(--color-down);
+  --accent-ai: #7c3aed;
+  --accent-ai-hover: #6d28d9;
+
+  /* 响应式尺寸变量 */
+  --space-unit: 0.25rem;
+  --font-base: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --font-xs: clamp(0.625rem, 0.6rem + 0.125vw, 0.6875rem);
+  --font-sm: clamp(0.6875rem, 0.65rem + 0.1875vw, 0.75rem);
+  --font-md: clamp(0.8125rem, 0.75rem + 0.3125vw, 0.9375rem);
+  --font-lg: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-xl: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+
+  /* 布局尺寸 */
+  --sidebar-width: clamp(3rem, 12vw, 14rem);
+  --sidebar-collapsed: 3rem;
+  --header-height: clamp(2.5rem, 8vh, 2.75rem);
+  --toolbar-height: clamp(1.75rem, 6vh, 2rem);
+
+  /* 间距 */
+  --space-1: calc(var(--space-unit) * 1);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-5: calc(var(--space-unit) * 5);
+  --space-6: calc(var(--space-unit) * 6);
+
+  /* 圆角 */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  /* 过渡 */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+}
+
+/* ============================================
+   2. 浅色主题
+   ============================================ */
+[data-theme="light"] {
+  --bg-primary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f5f5f5;
+  --bg-card: #ffffff;
+  --bg-modal: #ffffff;
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-muted: #a3a3a3;
+  --border-color: #e5e5e5;
+  --border-card: #d4d4d4;
+  --border-hover: #a3a3a3;
+  --accent-primary: #2563eb;
+  --accent-primary-hover: #1d4ed8;
+  --color-up: #dc2626;
+  --color-down: #16a34a;
+}
+
+/* ============================================
+   3. 基础重置
+   ============================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: clamp(14px, 0.9vw + 10px, 16px);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   4. 滚动条样式
+   ============================================ */
+::-webkit-scrollbar {
+  width: clamp(3px, 0.25vw, 4px);
+  height: clamp(3px, 0.25vw, 4px);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+
+/* Firefox 滚动条样式 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-tertiary) transparent;
+}
+
+/* ============================================
+   5. 工具栏组件
+   ============================================ */
+.toolbar-btn {
+  height: var(--toolbar-height);
+  padding: 0 clamp(0.5rem, 1vw, 0.75rem);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.25rem, 0.5vw, 0.375rem);
+  white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.toolbar-btn:active {
+  background: var(--bg-secondary);
+}
+
+.toolbar-btn.primary {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.toolbar-btn.primary:hover {
+  background: var(--accent-primary-hover);
+  border-color: var(--accent-primary-hover);
+}
+
+.toolbar-btn.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.toolbar-select {
+  height: var(--toolbar-height);
+  padding: 0 clamp(0.375rem, 0.75vw, 0.5rem);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  min-width: clamp(5rem, 10vw, 8rem);
+}
+
+.toolbar-select:focus {
+  border-color: var(--border-hover);
+}
+
+.toolbar-input {
+  height: var(--toolbar-height);
+  padding: 0 clamp(0.375rem, 0.75vw, 0.5rem);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.toolbar-input:focus {
+  border-color: var(--border-hover);
+}
+
+/* ============================================
+   6. 卡片样式
+   ============================================ */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-normal);
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+}
+
+/* ============================================
+   7. 数值字体与涨跌色
+   ============================================ */
+.metric-value,
+.amount,
+.percentage,
+.number {
+  font-family: 'JetBrains Mono', 'Roboto Mono', 'SF Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' on;
+}
+
+.positive {
+  color: var(--color-up);
+}
+
+.negative {
+  color: var(--color-down);
+}
+
+/* ============================================
+   8. 图表容器
+   ============================================ */
+.chart-container {
+  position: relative;
+  height: clamp(200px, 35vh, 300px);
+  width: 100%;
+}
+
+/* ============================================
+   9. 加载与动画
+   ============================================ */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: clamp(1.25rem, 3vw, 1.5rem);
+  height: clamp(1.25rem, 3vw, 1.5rem);
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   10. 表格样式
+   ============================================ */
+.table-container {
+  max-height: clamp(300px, 50vh, 400px);
+  overflow-y: auto;
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-secondary);
+  z-index: 1;
+}
+
+/* ============================================
+   11. 热力图单元格
+   ============================================ */
+.heatmap-cell {
+  transition: transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+/* ============================================
+   12. 模态框样式
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: min(90%, 1200px);
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(-10px);
+  transition: transform var(--transition-normal);
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.modal-title {
+  font-size: var(--font-md);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.modal-close {
+  width: clamp(1.25rem, 3vw, 1.5rem);
+  height: clamp(1.25rem, 3vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: var(--font-md);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.modal-body {
+  padding: clamp(0.75rem, 2vw, 1rem);
+}
+
+.modal-footer {
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   13. 按钮基础样式
+   ============================================ */
+.btn {
+  height: var(--toolbar-height);
+  padding: 0 clamp(0.5rem, 1vw, 0.75rem);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.25rem, 0.5vw, 0.375rem);
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--border-hover);
+}
+
+.btn-ai {
+  background-color: var(--accent-ai);
+  color: white;
+}
+
+.btn-ai:hover:not(:disabled) {
+  background-color: var(--accent-ai-hover);
+}
+
+/* ============================================
+   14. Flexbox 布局工具类
+   ============================================ */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-1 {
+  gap: var(--space-1);
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-3 {
+  gap: var(--space-3);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}
+
+/* ============================================
+   15. 侧边栏布局
+   ============================================ */
+.sidebar {
+  width: var(--sidebar-width);
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 0;
+  overflow: hidden;
+}
+
+/* ============================================
+   16. 响应式断点
+   ============================================ */
+
+/* 中屏桌面 (992px - 1199px) */
+@media (max-width: 1199px) {
+  :root {
+    --sidebar-width: clamp(2.75rem, 10vw, 12rem);
+    --font-base: clamp(0.6875rem, 0.65rem + 0.1875vw, 0.8125rem);
+  }
+
+  .chart-container {
+    height: clamp(180px, 30vh, 250px);
+  }
+}
+
+/* 小屏桌面/平板 (768px - 991px) */
+@media (max-width: 991px) {
+  :root {
+    --sidebar-width: var(--sidebar-collapsed);
+    --header-height: 2.5rem;
+    --font-base: clamp(0.625rem, 0.6rem + 0.125vw, 0.75rem);
+  }
+
+  .sidebar {
+    width: var(--sidebar-collapsed);
+  }
+
+  .sidebar .nav-label,
+  .sidebar .section-title {
+    display: none;
+  }
+
+  .chart-container {
+    height: clamp(160px, 25vh, 220px);
+  }
+
+  .table-container {
+    max-height: clamp(250px, 40vh, 350px);
+  }
+}
+
+/* 平板/手机横屏 (576px - 767px) */
+@media (max-width: 767px) {
+  :root {
+    --toolbar-height: 1.625rem;
+    --font-xs: 0.625rem;
+  }
+
+  .sidebar {
+    width: 0;
+    position: fixed;
+    z-index: 50;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+  }
+
+  .sidebar.open {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .chart-container {
+    height: clamp(150px, 22vh, 200px);
+  }
+
+  .modal {
+    width: 95%;
+    margin: var(--space-2);
+  }
+
+  .toolbar-btn,
+  .btn {
+    padding: 0 var(--space-2);
+  }
+}
+
+/* 手机竖屏 (< 576px) */
+@media (max-width: 575px) {
+  :root {
+    --font-base: 0.75rem;
+    --space-unit: 0.2rem;
+  }
+
+  html {
+    font-size: 14px;
+  }
+
+  .chart-container {
+    height: 180px;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: 85vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+}
+
+/* 高缩放比例适配 (150%+) */
+@media (min-resolution: 144dpi) {
+  :root {
+    --font-base: clamp(0.8125rem, 0.75rem + 0.3125vw, 0.9375rem);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .sidebar,
+  .toolbar-btn:not(.primary),
+  .modal-overlay {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 暗色/亮色模式过渡 */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

@@ -1,0 +1,15 @@
+{
+  "strategy_id": "jq_volume_v1pro",
+  "name": "聚宽量比市值策略V1Pro",
+  "version": "1.0",
+  "parameters": {
+    "market_cap_min": 200000,
+    "market_cap_max": 600000,
+    "volume_ratio_threshold": 3.0,
+    "ma_days": 5,
+    "min_list_days": 60,
+    "max_candidates": 1500,
+    "position_ratio": 0.2,
+    "max_stocks_per_day": 5
+  }
+}

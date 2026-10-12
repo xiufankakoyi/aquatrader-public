@@ -1,0 +1,229 @@
+# =============================================================================
+# AQUATRADE Research Scoring Weights
+# =============================================================================
+# 所有评分权重集中配置。修改后无需重启，WeightRegistry支持热加载。
+# 权重说明：
+#   - positive_weights: 加分维度，权重之和不需要等于1（概率聚合时会自动归一化）
+#   - penalty_weights: 惩罚维度，乘法衰减因子，值越大惩罚越重
+#   - thresholds: 阈值配置，避免硬编码
+# =============================================================================
+
+# ---- Claim 评分权重 (对应 ClaimScoreComponents) ----
+claim_scoring:
+  positive_weights:
+    source_weight: 0.30
+    extractor_confidence: 0.20
+    evidence_clarity: 0.20
+    relation_clarity: 0.15
+    recency_score: 0.10
+    text_quality_score: 0.05
+  # penalty 直接减去，范围[0, 1]
+  max_noise_penalty: 0.30
+  max_contradiction_penalty: 0.50
+  # 来源地板
+  source_floor:
+    high_confidence: {min_weight: 0.95, floor: 0.60}
+    medium_confidence: {min_weight: 0.85, floor: 0.50}
+    low_confidence: {min_weight: 0.65, floor: 0.38}
+  # 状态晋升阈值
+  status_thresholds:
+    raw: 0.00
+    candidate: 0.30
+    supported: 0.55
+    trusted: 0.75
+
+# ---- 节点评分权重 (对应 FrontierScorer.score_node) ----
+node_scoring:
+  # 正向维度（使用Noisy-OR概率聚合，权重代表"该维度的判别力"）
+  positive_dimensions:
+    upstream_position_score: {weight: 1.0, saturation: 0.8}
+    axis_score:              {weight: 1.2, saturation: 0.9}
+    bottleneck_score:        {weight: 1.5, saturation: 0.95}
+    irreplaceability_score:  {weight: 1.0, saturation: 0.85}
+    evidence_score:          {weight: 1.3, saturation: 0.95}
+    source_quality_score:    {weight: 1.0, saturation: 0.9}
+    scarcity_score:          {weight: 0.8, saturation: 0.7}
+    domestic_substitution_score: {weight: 1.1, saturation: 0.85}
+    obscurity_score:         {weight: 0.5, saturation: 0.6}
+    valuation_score:         {weight: 0.4, saturation: 0.5}
+  # 惩罚维度（乘法衰减，值为最大衰减系数）
+  penalty_dimensions:
+    hype_penalty:                          {max_decay: 0.30}
+    invalid_company_position_penalty:      {max_decay: 0.50}
+    conflict_penalty:                      {max_decay: 0.40}
+  # 一票否决（直接置零）
+  veto:
+    generic_penalty: true
+  # 稀缺性判定
+  scarcity:
+    few_sources_threshold: 2
+    few_sources_score: 0.6
+    some_sources_threshold: 4
+    some_sources_score: 0.3
+    min_evidence_for_scarcity: 0.5
+  # 过热判定
+  hype:
+    source_count_threshold: 10
+    penalty_per_extra_source: 0.02
+    max_penalty: 0.4
+
+# ---- 路径评分权重 (对应 FrontierScorer.score_path / score_path_candidate) ----
+path_scoring:
+  # 路径组合权重
+  node_aggregation:
+    avg_node_weight: 0.45
+    max_bottleneck_weight: 0.20
+  # bonus 加分项
+  bonuses:
+    tail_company_bonus: 0.10
+    tail_specific_node_bonus: 0.20
+    direction_bonus_per_node: 0.07
+    direction_bonus_max: 0.20
+    diversity_bonus_per_axis: 0.03
+    diversity_bonus_max: 0.15
+    preferred_axis_extra_bonus: 0.05
+    multi_source_per_type: 0.06
+    multi_source_max: 0.12
+  # 长度因子
+  length_factors:
+    too_short_penalty: 0.7    # <3 nodes
+    ideal_max: 6
+    too_long_penalty: 0.8     # >6 nodes
+  # 事件调整（乘法模式，非加法）
+  event_adjustment:
+    boost_scale: 0.25
+    risk_scale: 0.35
+    contradiction_scale: 0.40
+    freshness_scale: 0.05
+    promotion_pressure_scale: 0.10
+  # 路径分类阈值
+  category_thresholds:
+    high_confidence: 0.65
+    contradiction_pressure: 0.15
+    event_risk: 0.15
+    promotion_pressure: 0.15
+    high_potential: 0.40
+    weak: 0.25
+    evidence_gap_high: 0.3
+
+# ---- 路径质量评估权重 (PathQualityEvaluator) ----
+path_quality:
+  aggregation_weights:
+    structural_score: 0.15
+    evidence_score: 0.25
+    source_score: 0.10
+    consistency_score: 0.15
+    freshness_score: 0.05
+    bottleneck_score: 0.20
+    diversity_score: 0.10
+  quality_labels:
+    STRONG_ALPHA:      {min_score: 0.80, min_bottleneck: 0.55, min_consistency: 0.70}
+    PROMOTION_READY:   {min_score: 0.70, min_evidence: 0.55, min_consistency: 0.65}
+    PROBE_FIRST:       {min_score: 0.45}
+    WEAK_EVIDENCE:     {min_score: 0.25}
+  contradiction_override:
+    max_consistency: 0.35
+
+# ---- Flow剪枝评分权重 (FlowPathPruner) ----
+flow_scoring:
+  weights:
+    root_relevance: 0.10
+    axis_alignment: 0.20
+    relation_reliability: 0.15
+    edge_confidence_score: 0.15
+    claim_support: 0.15
+    evidence_availability: 0.10
+    event_activation: 0.05
+    source_reliability: 0.10
+  min_flow_score: 0.15
+  redundancy_threshold: 0.85
+  axis_weights:
+    MATERIAL: 0.9
+    EQUIPMENT: 0.9
+    PROCESS: 0.85
+    CERTIFICATION: 0.85
+    VALUATION: 0.3
+
+# ---- 证据性评分 (evidentiality_scorer) ----
+evidentiality:
+  weights:
+    entity_hit: 0.40
+    stance_alignment: 0.30
+    temporal_proximity: 0.15
+    quantification: 0.15
+  recency_window_days: 30
+  quantification_cap: 3
+
+# ---- 来源可信度默认值 ----
+source_weights:
+  announcement: 0.95
+  annual_report: 0.95
+  prospectus: 0.95
+  official_website: 0.95
+  julang_report: 0.85
+  broker_report: 0.85
+  industry_whitepaper: 0.85
+  whitepaper: 0.82
+  patent: 0.75
+  standard: 0.75
+  wencai: 0.65
+  eastmoney: 0.65
+  cninfo_interaction: 0.65
+  investor_relation: 0.65
+  interaction_easy: 0.65
+  news: 0.45
+  exhibition: 0.45
+  meeting_minutes: 0.45
+  conference: 0.45
+  web_search_snippet: 0.30
+  web_search: 0.30
+  forum: 0.20
+  social_media: 0.20
+  market_data: 0.90
+  llm_inference: 0.20
+  tdx_report: 0.50
+  default: 0.50
+
+# ---- 时间核函数配置 (TemporalKernel) ----
+temporal_kernel:
+  # 不同来源类型的半衰期（天）
+  half_lives:
+    announcement:       {half_life_days: 90,  kernel_type: "exponential"}
+    annual_report:      {half_life_days: 180, kernel_type: "exponential"}
+    broker_report:      {half_life_days: 30,  kernel_type: "exponential"}
+    industry_whitepaper: {half_life_days: 120, kernel_type: "exponential"}
+    patent:             {half_life_days: 365, kernel_type: "exponential"}
+    news:               {half_life_days: 7,   kernel_type: "exponential"}
+    forum:              {half_life_days: 1,   kernel_type: "exponential"}
+    social_media:       {half_life_days: 1,   kernel_type: "exponential"}
+    default:            {half_life_days: 30,  kernel_type: "exponential"}
+  # Hawkes过程：事件自激参数
+  hawkes:
+    self_excitation_alpha: 0.1   # 每次事件到达的激发强度
+    decay_beta: 0.05             # 激发衰减速率（天^-1）
+    max_excitation: 0.3          # 最大激发加成
+
+# ---- 贝叶斯校准配置 (BayesianWeightCalibrator) ----
+bayesian_calibration:
+  enabled: true                    # 是否启用贝叶斯状态升级（替代固定阈值）
+  # 先验权重（从上面positive_weights复制作为先验均值）
+  prior_strength: 10.0            # 先验的等效样本量（越大越信任先验）
+  # 走路验证窗口
+  walk_forward:
+    train_window_days: 365
+    test_window_days: 90
+    min_train_samples: 50
+  # 收缩系数（防止过拟合）
+  shrinkage:
+    min_effective_samples: 20
+    max_weight_deviation: 0.15    # 权重相对先验的最大偏移
+
+# ---- 性能优化配置 ----
+performance:
+  cache:
+    node_depth_cache_size: 10000
+    node_score_cache_ttl_seconds: 300
+  wal:
+    enabled: true
+    flush_interval_seconds: 5
+    max_wal_entries_before_rotate: 1000

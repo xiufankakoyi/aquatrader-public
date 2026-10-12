@@ -1,0 +1,87 @@
+# 双均线策略配置
+# 基于短期和长期均线的交叉进行买卖决策
+
+strategy:
+  strategy_id: "dual_ma_v1"
+  name: "双均线策略"
+  version: "1.0"
+  description: "基于短期和长期均线交叉的趋势跟踪策略。当短期均线上穿长期均线时买入，下穿时卖出。"
+  author: "AquaTrade"
+  tags: ["趋势跟踪", "均线", "经典策略"]
+
+  # 参数定义 - 前端可配置
+  parameters:
+    - name: fast_window
+      type: int
+      default: 5
+      min: 2
+      max: 30
+      step: 1
+      label: "短期均线周期"
+      description: "短期移动平均线的计算周期"
+      unit: "天"
+    
+    - name: slow_window
+      type: int
+      default: 20
+      min: 5
+      max: 60
+      step: 1
+      label: "长期均线周期"
+      description: "长期移动平均线的计算周期"
+      unit: "天"
+
+  # 指标声明 - 引擎预计算
+  indicators:
+    - name: ma_fast
+      type: ma
+      params:
+        column: close
+        window: "${fast_window}"
+      description: "短期移动平均线"
+    
+    - name: ma_slow
+      type: ma
+      params:
+        column: close
+        window: "${slow_window}"
+      description: "长期移动平均线"
+
+  # 交易规则
+  rules:
+    # 买入规则：金叉 + 价格在短期均线上方
+    - action: buy
+      condition: "crossover(ma_fast, ma_slow) and close > ma_fast"
+      position_ratio: 0.1
+      max_stocks_per_day: 5
+      priority: 10
+    
+    # 卖出规则：死叉
+    - action: sell
+      condition: "crossunder(ma_fast, ma_slow)"
+      priority: 10
+    
+    # 备选卖出规则：价格跌破长期均线
+    - action: sell
+      condition: "close < ma_slow"
+      priority: 5
+
+  # 风险管理
+  risk_management:
+    max_positions: 10
+    position_ratio: 0.1
+    stop_loss: 0.08
+    max_holding_days: 20
+
+  # 股票过滤
+  filters:
+    market_cap_min: 200000  # 20亿
+    market_cap_max: 1000000  # 100亿
+    price_min: 2.0
+    price_max: 500.0
+    exclude_st: true
+    exclude_kc: false
+    min_list_days: 60
+
+  created_at: "2025-02-14T00:00:00"
+  updated_at: "2025-02-14T00:00:00"
